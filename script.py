@@ -61,10 +61,34 @@ def send_to_3rd_party(coub_url):
     except TimeoutException:
         print("Timed out waiting for page to load..check your network connectivty")
 
+    # closing driver
     # driver.close()
 
-direct_link = input('Enter the link of the coub video to download')
+    print('Closing driver and video downloaded properly')
 
 
-# calling main function
-send_to_3rd_party(direct_link)
+while True:
+    direct_link = input('Enter the link of the coub video to download')
+
+
+    # calling main function
+    if 'coub.com' not in direct_link:
+        print('Wrong link')
+        continue
+    else:
+        print('Starting downloading')
+        send_to_3rd_party(direct_link)
+
+        # downloading if download is finished
+        wait = True
+        while(wait==True):
+            for fname in os.listdir(os.path.join(os.getcwd(), pathname)):
+                if ('Unconfirmed') in fname:
+                    print('downloading files ...')
+                    sleep(10)
+                else:
+                    wait=False
+        
+        print('finished downloading all files ...')
+        
+        new = input('Do you want to download another or')
