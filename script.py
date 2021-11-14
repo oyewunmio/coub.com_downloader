@@ -17,7 +17,7 @@ pathname = input('Enter the name of the folder to store the downloaded images to
 #web driver configuration
 chrome_options = Options()
 chrome_options.add_argument("--window-size=1920,1080")
-chrome_options.headless = False
+chrome_options.headless = True
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 ua = UserAgent(use_cache_server=False)
@@ -61,34 +61,25 @@ def send_to_3rd_party(coub_url):
     except TimeoutException:
         print("Timed out waiting for page to load..check your network connectivty")
 
-    # closing driver
-    # driver.close()
-
-    print('Closing driver and video downloaded properly')
-
-
-while True:
-    direct_link = input('Enter the link of the coub video to download')
-
-
-    # calling main function
-    if 'coub.com' not in direct_link:
-        print('Wrong link')
-        continue
-    else:
-        print('Starting downloading')
-        send_to_3rd_party(direct_link)
-
-        # downloading if download is finished
-        wait = True
-        while(wait==True):
-            for fname in os.listdir(os.path.join(os.getcwd(), pathname)):
-                if ('Unconfirmed') in fname:
-                    print('downloading files ...')
-                    sleep(10)
-                else:
-                    wait=False
+    wait = True
+    while(wait == True):
+        for fname in os.listdir(os.path.join(os.getcwd(), pathname)):
+            if ('Unconfirmed') in fname:
+                print('downloading files ...')
+                sleep(10)
+            else:
+                wait=False
         
-        print('finished downloading all files ...')
-        
-        new = input('Do you want to download another or')
+    print('finished downloading file ...')
+
+    print('Closing script')
+    driver.close()
+
+
+direct_link = input('Enter direct link of coub video to download\t')
+if 'coub.com' not in direct_link:
+    print('Wrong url')
+    quit()
+else:
+    send_to_3rd_party(direct_link)
+
